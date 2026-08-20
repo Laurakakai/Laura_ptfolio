@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — Portfolio Admin</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+
+{% include "admin/_icons.html" %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-stack flash-stack-standalone">
+    {% for category, message in messages %}
+    <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<div class="admin-login-wrap">
+  <div class="admin-login-card">
+    <div class="admin-login-icon"><svg class="icon" style="width:26px;height:26px"><use href="#icon-lock"></use></svg></div>
+    <h1>Portfolio Admin</h1>
+    <p class="sub">Sign in to manage Laura's portfolio content.</p>
+    <form method="post" action="{{ url_for('admin_login') }}">
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <div class="form-row">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autocomplete="username" required autofocus>
+      </div>
+      <div class="form-row">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn-admin btn-admin-primary">Log in</button>
+    </form>
+    <p class="admin-login-hint">First time here? Default login is <strong>admin</strong> / <strong>ChangeMe!123</strong> — change it right after signing in.</p>
+    <a href="{{ url_for('index') }}" class="admin-back-link">&larr; Back to public site</a>
+  </div>
+</div>
+
+</body>
+</html>

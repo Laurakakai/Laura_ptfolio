@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit category' if item else 'Add category' }}{% endblock %}
+{% block heading %}{{ 'Edit category' if item else 'Add category' }}{% endblock %}
+{% block content %}
+<form method="post" class="admin-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="form-row">
+      <label for="category">Category name</label>
+      <input type="text" id="category" name="category" value="{{ item.category if item else '' }}" required>
+    </div>
+    <div class="form-row">
+      <label for="items">Items</label>
+      <textarea id="items" name="items" rows="6">{{ items_text|default('') }}</textarea>
+      <p class="form-hint">One item per line.</p>
+    </div>
+    <div class="form-row">
+      <label>Icon</label>
+      <div class="icon-radio-group">
+        {% for i in icons %}
+        <label class="icon-radio">
+          <input type="radio" name="icon" value="{{ i }}" {{ 'checked' if (item and item.icon == i) or (not item and i == 'sparkles') }}>
+          <svg class="icon" style="width:22px;height:22px"><use href="#icon-{{ i }}"></use></svg>
+          {{ i }}
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-admin btn-admin-primary">{{ 'Save changes' if item else 'Add category' }}</button>
+      <a href="{{ url_for('admin_competencies_list') }}" class="btn-admin">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

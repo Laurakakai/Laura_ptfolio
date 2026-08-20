@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% block title %}Skills{% endblock %}
+{% block heading %}Skills{% endblock %}
+{% block content %}
+<div class="admin-panel-head">
+  <p>Skill bars on the public Skills section, in display order.</p>
+  <a href="{{ url_for('admin_skills_new') }}" class="btn-admin btn-admin-primary"><svg class="icon"><use href="#icon-plus"></use></svg>Add skill</a>
+</div>
+<div class="admin-table-wrap">
+  {% if rows %}
+  <table class="admin-table">
+    <thead><tr><th>Skill</th><th>Group</th><th>Level</th><th></th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.name }}</strong></td>
+        <td class="muted-cell">{{ r.group }}</td>
+        <td class="muted-cell">{{ r.level }}%</td>
+        <td>
+          <div class="admin-row-actions">
+            <form method="post" action="{{ url_for('admin_move', entity='skills', item_id=r.id, direction='up') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button type="submit" class="btn-admin" title="Move up"><svg class="icon"><use href="#icon-arrow-up"></use></svg></button></form>
+            <form method="post" action="{{ url_for('admin_move', entity='skills', item_id=r.id, direction='down') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button type="submit" class="btn-admin" title="Move down"><svg class="icon"><use href="#icon-arrow-down"></use></svg></button></form>
+            <a href="{{ url_for('admin_skills_edit', item_id=r.id) }}" class="btn-admin"><svg class="icon"><use href="#icon-edit"></use></svg>Edit</a>
+            <form method="post" action="{{ url_for('admin_delete', entity='skills', item_id=r.id) }}" onsubmit="return confirm('Delete this skill?');">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button type="submit" class="btn-admin btn-admin-danger"><svg class="icon"><use href="#icon-trash"></use></svg>Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="admin-empty">No skills yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

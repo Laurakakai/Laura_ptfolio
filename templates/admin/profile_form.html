@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+{% block title %}Profile{% endblock %}
+{% block heading %}Profile{% endblock %}
+{% block content %}
+<form method="post" class="admin-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" value="{{ profile.name }}" required>
+      </div>
+      <div class="form-row">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" value="{{ profile.location }}" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" value="{{ profile.title }}" required>
+    </div>
+    <div class="form-row">
+      <label for="summary">Summary</label>
+      <textarea id="summary" name="summary" rows="6" required>{{ profile.summary }}</textarea>
+    </div>
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ profile.email }}" required>
+      </div>
+      <div class="form-row">
+        <label for="phones">Phone numbers</label>
+        <textarea id="phones" name="phones" rows="2">{{ profile.phones|join('\n') }}</textarea>
+        <p class="form-hint">One per line.</p>
+      </div>
+    </div>
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="linkedin">LinkedIn URL</label>
+        <input type="url" id="linkedin" name="linkedin" value="{{ profile.linkedin }}" required>
+      </div>
+      <div class="form-row">
+        <label for="linkedin_display">LinkedIn display text</label>
+        <input type="text" id="linkedin_display" name="linkedin_display" value="{{ profile.linkedin_display }}" required>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-admin btn-admin-primary">Save changes</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block title %}References{% endblock %}
+{% block heading %}References{% endblock %}
+{% block content %}
+<div class="admin-panel-head">
+  <p>Shown on the public Contact section — phone/email are intentionally kept off the public page.</p>
+  <a href="{{ url_for('admin_references_new') }}" class="btn-admin btn-admin-primary"><svg class="icon"><use href="#icon-plus"></use></svg>Add reference</a>
+</div>
+<div class="admin-table-wrap">
+  {% if rows %}
+  <table class="admin-table">
+    <thead><tr><th>Name</th><th>Title</th><th>Organization</th><th></th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.name }}</strong></td>
+        <td class="muted-cell">{{ r.title }}</td>
+        <td class="muted-cell">{{ r.org }}</td>
+        <td>
+          <div class="admin-row-actions">
+            <a href="{{ url_for('admin_references_edit', item_id=r.id) }}" class="btn-admin"><svg class="icon"><use href="#icon-edit"></use></svg>Edit</a>
+            <form method="post" action="{{ url_for('admin_delete', entity='references', item_id=r.id) }}" onsubmit="return confirm('Delete this reference?');">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button type="submit" class="btn-admin btn-admin-danger"><svg class="icon"><use href="#icon-trash"></use></svg>Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="admin-empty">No references yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block title %}Education{% endblock %}
+{% block heading %}Education{% endblock %}
+{% block content %}
+<div class="admin-panel-head">
+  <p>Degrees and formal education shown in the Foundations section.</p>
+  <a href="{{ url_for('admin_education_new') }}" class="btn-admin btn-admin-primary"><svg class="icon"><use href="#icon-plus"></use></svg>Add entry</a>
+</div>
+<div class="admin-table-wrap">
+  {% if rows %}
+  <table class="admin-table">
+    <thead><tr><th>Degree</th><th>School</th><th>Dates</th><th></th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.degree }}</strong></td>
+        <td class="muted-cell">{{ r.school }}</td>
+        <td class="muted-cell">{{ r.start }} – {{ r.end }}</td>
+        <td>
+          <div class="admin-row-actions">
+            <a href="{{ url_for('admin_education_edit', item_id=r.id) }}" class="btn-admin"><svg class="icon"><use href="#icon-edit"></use></svg>Edit</a>
+            <form method="post" action="{{ url_for('admin_delete', entity='education', item_id=r.id) }}" onsubmit="return confirm('Delete this entry?');">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button type="submit" class="btn-admin btn-admin-danger"><svg class="icon"><use href="#icon-trash"></use></svg>Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="admin-empty">No education entries yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

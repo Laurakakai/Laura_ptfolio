@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="admin-stat-grid">
+  <div class="admin-stat-card"><span class="num">{{ stats.years_experience }}</span><span class="lbl">Years of Experience</span></div>
+  <div class="admin-stat-card"><span class="num">{{ stats.organizations }}</span><span class="lbl">Organizations</span></div>
+  <div class="admin-stat-card"><span class="num">{{ stats.roles_held }}</span><span class="lbl">Roles Held</span></div>
+  <div class="admin-stat-card"><span class="num">{{ stats.competency_areas }}</span><span class="lbl">Competency Areas</span></div>
+</div>
+
+<div class="admin-quick-grid">
+  <a href="{{ url_for('admin_profile') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-users"></use></svg></span>
+    <span><strong>Profile</strong><span>Name, summary, contact details</span></span>
+  </a>
+  <a href="{{ url_for('admin_experience_list') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-briefcase"></use></svg></span>
+    <span><strong>Experience</strong><span>{{ content.experience|length }} roles on the timeline</span></span>
+  </a>
+  <a href="{{ url_for('admin_projects_list') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-network"></use></svg></span>
+    <span><strong>Projects</strong><span>{{ content.projects|length }} projects with resource links</span></span>
+  </a>
+  <a href="{{ url_for('admin_competencies_list') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-shield-check"></use></svg></span>
+    <span><strong>Competencies</strong><span>{{ content.competencies|length }} categories</span></span>
+  </a>
+  <a href="{{ url_for('admin_skills_list') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-sparkles"></use></svg></span>
+    <span><strong>Skills</strong><span>{{ content.skills|length }} proficiency bars</span></span>
+  </a>
+  <a href="{{ url_for('admin_education_list') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-graduation-cap"></use></svg></span>
+    <span><strong>Education</strong><span>{{ content.education|length }} entries</span></span>
+  </a>
+  <a href="{{ url_for('admin_certifications_list') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-award"></use></svg></span>
+    <span><strong>Certifications</strong><span>{{ content.certifications|length }} entries</span></span>
+  </a>
+  <a href="{{ url_for('admin_references_list') }}" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-book-open"></use></svg></span>
+    <span><strong>References</strong><span>{{ content.references|length }} contacts</span></span>
+  </a>
+  <a href="{{ url_for('index') }}" target="_blank" class="admin-quick-card">
+    <span class="icon-wrap"><svg class="icon"><use href="#icon-external"></use></svg></span>
+    <span><strong>View live site</strong><span>Opens the public portfolio</span></span>
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit education' if item else 'Add education' }}{% endblock %}
+{% block heading %}{{ 'Edit education' if item else 'Add education' }}{% endblock %}
+{% block content %}
+<form method="post" class="admin-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="form-row">
+      <label for="degree">Degree / qualification</label>
+      <input type="text" id="degree" name="degree" value="{{ item.degree if item else '' }}" required>
+    </div>
+    <div class="form-row">
+      <label for="school">School</label>
+      <input type="text" id="school" name="school" value="{{ item.school if item else '' }}" required>
+    </div>
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="start">Start date</label>
+        <input type="date" id="start" name="start" value="{{ item.start if item else '' }}" required>
+      </div>
+      <div class="form-row">
+        <label for="end">End date</label>
+        <input type="date" id="end" name="end" value="{{ item.end if item else '' }}" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="detail">Detail</label>
+      <textarea id="detail" name="detail" rows="4">{{ item.detail if item else '' }}</textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-admin btn-admin-primary">{{ 'Save changes' if item else 'Add entry' }}</button>
+      <a href="{{ url_for('admin_education_list') }}" class="btn-admin">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

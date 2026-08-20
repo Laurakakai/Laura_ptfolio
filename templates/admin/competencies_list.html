@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+{% block title %}Competencies{% endblock %}
+{% block heading %}Competencies{% endblock %}
+{% block content %}
+<div class="admin-panel-head">
+  <p>The "Core Competencies" cards on the About section, in display order.</p>
+  <a href="{{ url_for('admin_competencies_new') }}" class="btn-admin btn-admin-primary"><svg class="icon"><use href="#icon-plus"></use></svg>Add category</a>
+</div>
+<div class="admin-table-wrap">
+  {% if rows %}
+  <table class="admin-table">
+    <thead><tr><th>Category</th><th>Items</th><th></th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.category }}</strong><div class="muted-cell">Icon: {{ r.icon }}</div></td>
+        <td><div class="admin-chip-list">{% for i in r["items"] %}<span class="admin-chip">{{ i }}</span>{% endfor %}</div></td>
+        <td>
+          <div class="admin-row-actions">
+            <form method="post" action="{{ url_for('admin_move', entity='competencies', item_id=r.id, direction='up') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button type="submit" class="btn-admin" title="Move up"><svg class="icon"><use href="#icon-arrow-up"></use></svg></button></form>
+            <form method="post" action="{{ url_for('admin_move', entity='competencies', item_id=r.id, direction='down') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button type="submit" class="btn-admin" title="Move down"><svg class="icon"><use href="#icon-arrow-down"></use></svg></button></form>
+            <a href="{{ url_for('admin_competencies_edit', item_id=r.id) }}" class="btn-admin"><svg class="icon"><use href="#icon-edit"></use></svg>Edit</a>
+            <form method="post" action="{{ url_for('admin_delete', entity='competencies', item_id=r.id) }}" onsubmit="return confirm('Delete this category?');">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button type="submit" class="btn-admin btn-admin-danger"><svg class="icon"><use href="#icon-trash"></use></svg>Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="admin-empty">No competency categories yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

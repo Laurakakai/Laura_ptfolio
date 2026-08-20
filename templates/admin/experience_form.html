@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit role' if item else 'Add role' }}{% endblock %}
+{% block heading %}{{ 'Edit role' if item else 'Add role' }}{% endblock %}
+{% block content %}
+<form method="post" class="admin-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="role">Role title</label>
+        <input type="text" id="role" name="role" value="{{ item.role if item else '' }}" required>
+      </div>
+      <div class="form-row">
+        <label for="org">Organization</label>
+        <input type="text" id="org" name="org" value="{{ item.org if item else '' }}" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" value="{{ item.location if item else '' }}" required>
+    </div>
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="start">Start date</label>
+        <input type="date" id="start" name="start" value="{{ item.start if item else '' }}" required>
+      </div>
+      <div class="form-row">
+        <label for="end">End date</label>
+        <input type="date" id="end" name="end" value="{{ item.end if (item and item.end) else '' }}">
+        <p class="form-hint">Leave blank for "Present".</p>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Focus areas</label>
+      <div class="checkbox-group">
+        {% for t in tags %}
+        <label><input type="checkbox" name="tags" value="{{ t.key }}" {{ 'checked' if item and t.key in item.tags }}>{{ t.label }}</label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="highlights">Highlights</label>
+      <textarea id="highlights" name="highlights" rows="8">{{ highlights_text|default('') }}</textarea>
+      <p class="form-hint">One per line, formatted as <code>Title | Description</code>.</p>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-admin btn-admin-primary">{{ 'Save changes' if item else 'Add role' }}</button>
+      <a href="{{ url_for('admin_experience_list') }}" class="btn-admin">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

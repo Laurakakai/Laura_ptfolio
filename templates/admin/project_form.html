@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit project' if item else 'Add project' }}{% endblock %}
+{% block heading %}{{ 'Edit project' if item else 'Add project' }}{% endblock %}
+{% block content %}
+<form method="post" class="admin-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="form-row">
+      <label for="title">Project title</label>
+      <input type="text" id="title" name="title" value="{{ item.title if item else '' }}" required>
+    </div>
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="org">Organization</label>
+        <input type="text" id="org" name="org" value="{{ item.org if item else '' }}" required>
+      </div>
+      <div class="form-row">
+        <label for="period">Period</label>
+        <input type="text" id="period" name="period" placeholder="e.g. 2024 – 2025" value="{{ item.period if item else '' }}" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="summary">Summary</label>
+      <textarea id="summary" name="summary" rows="4" required>{{ item.summary if item else '' }}</textarea>
+    </div>
+    <div class="form-row">
+      <label>Focus areas</label>
+      <div class="checkbox-group">
+        {% for t in tags %}
+        <label><input type="checkbox" name="tags" value="{{ t.key }}" {{ 'checked' if item and t.key in item.tags }}>{{ t.label }}</label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="links">Resource links</label>
+      <textarea id="links" name="links" rows="5">{{ links_text|default('') }}</textarea>
+      <p class="form-hint">One per line, formatted as <code>Label | https://example.com</code>. Leave blank if there's nothing public to link to.</p>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-admin btn-admin-primary">{{ 'Save changes' if item else 'Add project' }}</button>
+      <a href="{{ url_for('admin_projects_list') }}" class="btn-admin">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

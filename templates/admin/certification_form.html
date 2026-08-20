@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit certification' if item else 'Add certification' }}{% endblock %}
+{% block heading %}{{ 'Edit certification' if item else 'Add certification' }}{% endblock %}
+{% block content %}
+<form method="post" class="admin-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="form-row">
+      <label for="name">Certificate name</label>
+      <input type="text" id="name" name="name" value="{{ item.name if item else '' }}" required>
+    </div>
+    <div class="form-row two-col">
+      <div class="form-row">
+        <label for="issuer">Issuer</label>
+        <input type="text" id="issuer" name="issuer" value="{{ item.issuer if item else '' }}" required>
+      </div>
+      <div class="form-row">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" value="{{ item.date if item else '' }}" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="detail">Detail</label>
+      <textarea id="detail" name="detail" rows="4">{{ item.detail if item else '' }}</textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-admin btn-admin-primary">{{ 'Save changes' if item else 'Add entry' }}</button>
+      <a href="{{ url_for('admin_certifications_list') }}" class="btn-admin">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

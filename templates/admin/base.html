@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Admin{% endblock %} — Portfolio Admin</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+
+{% include "admin/_icons.html" %}
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a href="{{ url_for('admin_dashboard') }}" class="admin-brand"><svg class="icon"><use href="#icon-network"></use></svg>Portfolio Admin</a>
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' }}"><svg class="icon"><use href="#icon-sparkles"></use></svg>Dashboard</a>
+      <a href="{{ url_for('admin_profile') }}" class="{{ 'active' if request.endpoint == 'admin_profile' }}"><svg class="icon"><use href="#icon-users"></use></svg>Profile</a>
+      <a href="{{ url_for('admin_experience_list') }}" class="{{ 'active' if 'experience' in request.endpoint }}"><svg class="icon"><use href="#icon-briefcase"></use></svg>Experience</a>
+      <a href="{{ url_for('admin_projects_list') }}" class="{{ 'active' if 'projects' in request.endpoint }}"><svg class="icon"><use href="#icon-network"></use></svg>Projects</a>
+      <a href="{{ url_for('admin_competencies_list') }}" class="{{ 'active' if 'competencies' in request.endpoint }}"><svg class="icon"><use href="#icon-shield-check"></use></svg>Competencies</a>
+      <a href="{{ url_for('admin_skills_list') }}" class="{{ 'active' if 'skills' in request.endpoint }}"><svg class="icon"><use href="#icon-sparkles"></use></svg>Skills</a>
+      <a href="{{ url_for('admin_education_list') }}" class="{{ 'active' if 'education' in request.endpoint }}"><svg class="icon"><use href="#icon-graduation-cap"></use></svg>Education</a>
+      <a href="{{ url_for('admin_certifications_list') }}" class="{{ 'active' if 'certifications' in request.endpoint }}"><svg class="icon"><use href="#icon-award"></use></svg>Certifications</a>
+      <a href="{{ url_for('admin_references_list') }}" class="{{ 'active' if 'references' in request.endpoint }}"><svg class="icon"><use href="#icon-book-open"></use></svg>References</a>
+      <a href="{{ url_for('admin_password') }}" class="{{ 'active' if request.endpoint == 'admin_password' }}"><svg class="icon"><use href="#icon-key"></use></svg>Change Password</a>
+    </nav>
+    <div class="admin-sidebar-foot">
+      <a href="{{ url_for('index') }}" target="_blank" class="admin-view-site"><svg class="icon"><use href="#icon-external"></use></svg>View live site</a>
+      <a href="{{ url_for('admin_logout') }}" class="admin-logout"><svg class="icon"><use href="#icon-logout"></use></svg>Log out</a>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <h1>{% block heading %}Dashboard{% endblock %}</h1>
+    </header>
+    <div class="admin-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

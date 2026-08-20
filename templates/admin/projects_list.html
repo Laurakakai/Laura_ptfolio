@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% block title %}Projects{% endblock %}
+{% block heading %}Projects{% endblock %}
+{% block content %}
+<div class="admin-panel-head">
+  <p>Projects &amp; resource links shown on the public site, in display order.</p>
+  <a href="{{ url_for('admin_projects_new') }}" class="btn-admin btn-admin-primary"><svg class="icon"><use href="#icon-plus"></use></svg>Add project</a>
+</div>
+<div class="admin-table-wrap">
+  {% if rows %}
+  <table class="admin-table">
+    <thead><tr><th>Project</th><th>Focus areas</th><th>Links</th><th></th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.title }}</strong><div class="muted-cell">{{ r.org }} · {{ r.period }}</div></td>
+        <td><div class="admin-chip-list">{% for l in r.tag_labels %}<span class="admin-chip">{{ l }}</span>{% endfor %}</div></td>
+        <td class="muted-cell">
+          {% if r.links %}
+            {% for l in r.links %}<div>{{ l.label }}</div>{% endfor %}
+          {% else %}
+            <span>None yet</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="admin-row-actions">
+            <form method="post" action="{{ url_for('admin_move', entity='projects', item_id=r.id, direction='up') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button type="submit" class="btn-admin" title="Move up"><svg class="icon"><use href="#icon-arrow-up"></use></svg></button></form>
+            <form method="post" action="{{ url_for('admin_move', entity='projects', item_id=r.id, direction='down') }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button type="submit" class="btn-admin" title="Move down"><svg class="icon"><use href="#icon-arrow-down"></use></svg></button></form>
+            <a href="{{ url_for('admin_projects_edit', item_id=r.id) }}" class="btn-admin"><svg class="icon"><use href="#icon-edit"></use></svg>Edit</a>
+            <form method="post" action="{{ url_for('admin_delete', entity='projects', item_id=r.id) }}" onsubmit="return confirm('Delete this project?');">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button type="submit" class="btn-admin btn-admin-danger"><svg class="icon"><use href="#icon-trash"></use></svg>Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="admin-empty">No projects yet. Add the first one.</p>
+  {% endif %}
+</div>
+{% endblock %}

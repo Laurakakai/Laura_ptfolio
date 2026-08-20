@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+{% block title %}Experience{% endblock %}
+{% block heading %}Experience{% endblock %}
+{% block content %}
+<div class="admin-panel-head">
+  <p>Roles shown on the public timeline, newest first — order follows each role's start date automatically.</p>
+  <a href="{{ url_for('admin_experience_new') }}" class="btn-admin btn-admin-primary"><svg class="icon"><use href="#icon-plus"></use></svg>Add role</a>
+</div>
+<div class="admin-table-wrap">
+  {% if rows %}
+  <table class="admin-table">
+    <thead><tr><th>Role</th><th>Organization</th><th>Dates</th><th>Focus areas</th><th></th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td><strong>{{ r.role }}</strong></td>
+        <td>{{ r.org }}<div class="muted-cell">{{ r.location }}</div></td>
+        <td class="muted-cell">{{ r.start_label }} – {{ r.end_label }}<div>{{ r.duration_label }}</div></td>
+        <td><div class="admin-chip-list">{% for l in r.tag_labels %}<span class="admin-chip">{{ l }}</span>{% endfor %}</div></td>
+        <td>
+          <div class="admin-row-actions">
+            <a href="{{ url_for('admin_experience_edit', item_id=r.id) }}" class="btn-admin"><svg class="icon"><use href="#icon-edit"></use></svg>Edit</a>
+            <form method="post" action="{{ url_for('admin_delete', entity='experience', item_id=r.id) }}" onsubmit="return confirm('Delete this role?');">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button type="submit" class="btn-admin btn-admin-danger"><svg class="icon"><use href="#icon-trash"></use></svg>Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="admin-empty">No roles yet. Add the first one.</p>
+  {% endif %}
+</div>
+{% endblock %}
