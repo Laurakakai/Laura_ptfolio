@@ -3,3 +3,5 @@ __pycache__/
 .secret_key
 content.json
 server.log
+streamlit.log
+.streamlit/secrets.toml

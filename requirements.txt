@@ -1,1 +1,3 @@
+streamlit>=1.50
+werkzeug>=3.0
 flask>=3.0
