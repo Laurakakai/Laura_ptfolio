@@ -610,7 +610,16 @@ if __name__ == "__main__":
         running_under_streamlit = False
 
     if running_under_streamlit:
-        import streamlit_app  # noqa: F401 -- importing renders the Streamlit UI
+        # Streamlit reruns this file after each interaction. A regular import
+        # would only render once because Python caches imported modules, leaving
+        # subsequent runs blank. Execute the entry point afresh on every rerun.
+        import runpy
+        from pathlib import Path
+
+        runpy.run_path(
+            Path(__file__).with_name("streamlit_app.py"),
+            run_name="__streamlit_app__",
+        )
     else:
         # The reloader is unnecessary for this local-only alternative and is
         # unsafe when embedded by another application runner.
