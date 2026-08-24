@@ -597,4 +597,21 @@ def admin_references_edit(item_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Streamlit executes its configured entry point as ``__main__`` on a
+    # worker thread. Starting Flask's development server there enables
+    # Werkzeug's signal-based reloader, which can only run on Python's main
+    # thread. If Streamlit Cloud is accidentally configured with app.py as
+    # the entry point, render the Streamlit application instead.
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+        running_under_streamlit = get_script_run_ctx(suppress_warning=True) is not None
+    except ImportError:
+        running_under_streamlit = False
+
+    if running_under_streamlit:
+        import streamlit_app  # noqa: F401 -- importing renders the Streamlit UI
+    else:
+        # The reloader is unnecessary for this local-only alternative and is
+        # unsafe when embedded by another application runner.
+        app.run(debug=True, use_reloader=False)
